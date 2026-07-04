@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Las variables --font-display / --font-body las inyecta next/font
+   automáticamente en <html> (ver layout.tsx) — no hace falta declararlas acá. */
+
+@layer base {
+  * {
+    @apply border-base-surface;
+  }
+
+  html {
+    scroll-behavior: auto; /* el smooth scroll real lo maneja Lenis, no CSS nativo */
+    overflow-x: hidden; /* mobile-first: ningún elemento ancho puede generar scroll horizontal */
+  }
+
+  body {
+    @apply bg-base-black text-neutral-white font-body antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    @apply bg-accent text-base-black;
+  }
+
+  /* Accesibilidad (Parte 11): anillo de foco visible y consistente para
+     navegación por teclado, sin afectar el look al clickear con mouse
+     (focus-visible, no focus). */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-base-black;
+  }
+}
+
+@layer components {
+  /* Input base reutilizado en todos los formularios del panel admin (Parte 10).
+     Ajustado a la nueva paleta clara: superficie blanca sólida en vez de
+     tinte translúcido (que casi no se veía sobre el fondo crema). */
+  .admin-input {
+    @apply w-full rounded-lg border border-base-surface bg-base-dark px-3 py-2.5 font-ui text-sm text-neutral-white outline-none transition-colors focus:border-accent;
+  }
+}
+
+/* Mobile-first: red de seguridad anti-overflow horizontal. Cualquier
+   imagen, canvas o svg que por algún motivo exceda el ancho del viewport
+   se recorta en vez de generar scroll horizontal. */
+img,
+svg,
+canvas,
+video {
+  max-width: 100%;
+}
+
+/* Accesibilidad (Parte 11): fallback CSS puro para prefers-reduced-motion —
+   cubre transiciones/animaciones CSS que no pasan por GSAP/Framer/R3F
+   (esos se manejan vía el hook useReducedMotion en JS, ver Hero.tsx). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
