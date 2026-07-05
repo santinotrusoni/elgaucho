@@ -35,7 +35,7 @@ export const categories: Category[] = [
   {
     slug: 'medicamentos',
     name: 'Medicamentos',
-    image: 'https://loremflickr.com/900/1100/pills,bottle,product',
+    image: 'https://loremflickr.com/320/240/dog',
     description: 'Salud respaldada por profesionales.',
   },
   {
